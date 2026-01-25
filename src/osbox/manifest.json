@@ -1,0 +1,509 @@
+{
+  "requirements": {
+    "src": "https://github.com/openstack/requirements.git",
+    "ref": "stable/2025.2"
+  },
+  "services": {
+    "keystone": {
+      "src": "https://github.com/openstack/keystone.git",
+      "ref": "a568938e0c967a56ade269c93f42718008487b14",
+      "commands": [
+        {
+          "name": "keystone-api",
+          "module": "keystone.wsgi.api:application",
+          "wsgi_server": true,
+          "factory": false,
+          "port": 5000
+        },
+        {
+          "name": "keystone-manage",
+          "module": "keystone.cmd.manage:main"
+        },
+        {
+          "name": "keystone-status",
+          "module": "keystone.cmd.status:main"
+        }
+      ],
+      "assets": [
+        {
+          "name": "keystone.conf",
+          "src": "config-generator/keystone.conf",
+          "genconfig": true
+        },
+        {
+          "name": "policy.yaml",
+          "src": "config-generator/keystone-policy-generator.conf",
+          "genpolicy": true
+        }
+      ]
+    },
+    "placement": {
+      "src": "https://github.com/openstack/placement.git",
+      "ref": "a4644b2799b6de4f4cf69a6bce529a993e97fb71",
+      "commands": [
+        {
+          "name": "placement-api",
+          "module": "placement.wsgi:init_application",
+          "wsgi_server": true,
+          "factory": true,
+          "port": 8778
+        },
+        {
+          "name": "placement-manage",
+          "module": "placement.cmd.manage:main"
+        },
+        {
+          "name": "placement-status",
+          "module": "placement.cmd.status:main"
+        }
+      ],
+      "assets": [
+        {
+          "name": "placement.conf",
+          "src": "etc/placement/config-generator.conf",
+          "genconfig": true
+        },
+        {
+          "name": "policy.yaml",
+          "src": "etc/placement/policy-generator.conf",
+          "genpolicy": true
+        }
+      ]
+    },
+    "glance": {
+      "src": "https://github.com/openstack/glance.git",
+      "ref": "309e9356a67c5604bc7e5773bf11cd64d1c1379f",
+      "commands": [
+        {
+          "name": "glance-api",
+          "module": "glance.cmd.api:main"
+        },
+        {
+          "name": "glance-cache-prefetcher",
+          "module": "glance.cmd.cache_prefetcher:main"
+        },
+        {
+          "name": "glance-cache-pruner",
+          "module": "glance.cmd.cache_pruner:main"
+        },
+        {
+          "name": "glance-cache-manage",
+          "module": "glance.cmd.cache_manage:main"
+        },
+        {
+          "name": "glance-control",
+          "module": "glance.cmd.control:main"
+        },
+        {
+          "name": "glance-manage",
+          "module": "glance.cmd.manage:main"
+        },
+        {
+          "name": "glance-replicator",
+          "module": "glance.cmd.replicator:main"
+        },
+        {
+          "name": "glance-scrubber",
+          "module": "glance.cmd.scrubber:main"
+        },
+        {
+          "name": "glance-status",
+          "module": "glance.cmd.status:main"
+        }
+      ],
+      "assets": [
+        {
+          "name": "glance-api-paste.ini",
+          "src": "etc/glance-api-paste.ini"
+        },
+        {
+          "name": "metadefs",
+          "src": "etc/metadefs"
+        },
+        {
+          "name": "glance-api.conf",
+          "src": "etc/oslo-config-generator/glance-api.conf",
+          "genconfig": true
+        },
+        {
+          "name": "glance-scrubber.conf",
+          "src": "etc/oslo-config-generator/glance-scrubber.conf",
+          "genconfig": true
+        },
+        {
+          "name": "glance-cache.conf",
+          "src": "etc/oslo-config-generator/glance-cache.conf",
+          "genconfig": true
+        },
+        {
+          "name": "glance-manage.conf",
+          "src": "etc/oslo-config-generator/glance-manage.conf",
+          "genconfig": true
+        },
+        {
+          "name": "glance-image-import.conf",
+          "src": "etc/oslo-config-generator/glance-image-import.conf",
+          "genconfig": true
+        },
+        {
+          "name": "policy.yaml",
+          "src": "etc/glance-policy-generator.conf",
+          "genpolicy": true
+        }
+      ]
+    },
+    "neutron": {
+      "src": "https://github.com/openstack/neutron.git",
+      "ref": "81756056431f1c93d823d98e64517fe3ffaa0c7d",
+      "commands": [
+        {
+          "name": "neutron-api",
+          "module": "neutron.cmd.server:main_api_uwsgi",
+          "wsgi_server": true,
+          "factory": false,
+          "port": 9696
+        },
+        {
+          "name": "neutron-db-manage",
+          "module": "neutron.db.migration.cli:main"
+        },
+        {
+          "name": "neutron-dhcp-agent",
+          "module": "neutron.cmd.agents.dhcp:main"
+        },
+        {
+          "name": "neutron-keepalived-state-change",
+          "module": "neutron.cmd.keepalived_state_change:main"
+        },
+        {
+          "name": "neutron-ipset-cleanup",
+          "module": "neutron.cmd.ipset_cleanup:main"
+        },
+        {
+          "name": "neutron-l3-agent",
+          "module": "neutron.cmd.agents.l3:main"
+        },
+        {
+          "name": "neutron-macvtap-agent",
+          "module": "neutron.cmd.plugins.macvtap_neutron_agent:main"
+        },
+        {
+          "name": "neutron-metadata-agent",
+          "module": "neutron.cmd.agents.metadata:main"
+        },
+        {
+          "name": "neutron-netns-cleanup",
+          "module": "neutron.cmd.netns_cleanup:main"
+        },
+        {
+          "name": "neutron-openvswitch-agent",
+          "module": "neutron.cmd.agents.ovs_neutron_agent:main"
+        },
+        {
+          "name": "neutron-ovs-cleanup",
+          "module": "neutron.cmd.ovs_cleanup:main"
+        },
+        {
+          "name": "neutron-rpc-server",
+          "module": "neutron.cmd.server:main_rpc"
+        },
+        {
+          "name": "neutron-rootwrap",
+          "module": "oslo_rootwrap.cmd:main"
+        },
+        {
+          "name": "neutron-rootwrap-daemon",
+          "module": "oslo_rootwrap.cmd:daemon"
+        },
+        {
+          "name": "neutron-usage-audit",
+          "module": "neutron.cmd.usage_audit:main"
+        },
+        {
+          "name": "neutron-metering-agent",
+          "module": "neutron.cmd.services.metering_agent:main"
+        },
+        {
+          "name": "neutron-sriov-nic-agent",
+          "module": "neutron.cmd.plugins.sriov_nic_neutron_agent:main"
+        },
+        {
+          "name": "neutron-sanity-check",
+          "module": "neutron.cmd.sanity_check:main"
+        },
+        {
+          "name": "neutron-periodic-workers",
+          "module": "neutron.cmd.server:main_periodic"
+        },
+        {
+          "name": "neutron-status",
+          "module": "neutron.cmd.status:main"
+        },
+        {
+          "name": "neutron-ovn-agent",
+          "module": "neutron.cmd.agents.ovn_neutron_agent:main"
+        },
+        {
+          "name": "neutron-ovn-maintenance-worker",
+          "module": "neutron.cmd.server:main_ovn_maintenance"
+        },
+        {
+          "name": "neutron-ovn-metadata-agent",
+          "module": "neutron.cmd.agents.ovn_metadata:main"
+        },
+        {
+          "name": "neutron-ovn-migration-mtu",
+          "module": "neutron.cmd.ovn.migration_mtu:main"
+        },
+        {
+          "name": "neutron-ovn-db-sync-util",
+          "module": "neutron.cmd.ovn.neutron_ovn_db_sync_util:main"
+        },
+        {
+          "name": "neutron-sanitize-port-binding-profile-allocation",
+          "module": "neutron.cmd.sanitize_port_binding_profile_allocation:main"
+        },
+        {
+          "name": "neutron-sanitize-port-mac-addresses",
+          "module": "neutron.cmd.sanitize_port_mac_addresses:main"
+        },
+        {
+          "name": "neutron-remove-duplicated-port-bindings",
+          "module": "neutron.cmd.remove_duplicated_port_bindings:main"
+        },
+        {
+          "name": "ml2ovn-trace",
+          "module": "neutron.cmd.ovn.ml2ovn_trace:main"
+        }
+      ],
+      "assets": [
+        {
+          "name": "api-paste.ini",
+          "src": "etc/api-paste.ini"
+        },
+        {
+          "name": "rootwrap.conf",
+          "src": "etc/rootwrap.conf"
+        },
+        {
+          "name": "rootwrap.filters",
+          "src": "etc/neutron/rootwrap.d/rootwrap.filters"
+        },
+        {
+          "name": "policy.yaml",
+          "src": "etc/oslo-policy-generator/policy.conf",
+          "genpolicy": true
+        },
+        {
+          "name": "dhcp_agent.ini",
+          "src": "etc/oslo-config-generator/dhcp_agent.ini",
+          "genconfig": true
+        },
+        {
+          "name": "l3_agent.ini",
+          "src": "etc/oslo-config-generator/l3_agent.ini",
+          "genconfig": true
+        },
+        {
+          "name": "macvtap_agent.ini",
+          "src": "etc/oslo-config-generator/macvtap_agent.ini",
+          "genconfig": true
+        },
+        {
+          "name": "metadata_agent.ini",
+          "src": "etc/oslo-config-generator/metadata_agent.ini",
+          "genconfig": true
+        },
+        {
+          "name": "metering_agent.ini",
+          "src": "etc/oslo-config-generator/metering_agent.ini",
+          "genconfig": true
+        },
+        {
+          "name": "ml2_conf.ini",
+          "src": "etc/oslo-config-generator/ml2_conf.ini",
+          "genconfig": true
+        },
+        {
+          "name": "neutron.conf",
+          "src": "etc/oslo-config-generator/neutron.conf",
+          "genconfig": true
+        },
+        {
+          "name": "neutron_ovn_metadata_agent.ini",
+          "src": "etc/oslo-config-generator/neutron_ovn_metadata_agent.ini",
+          "genconfig": true
+        },
+        {
+          "name": "openvswitch_agent.ini",
+          "src": "etc/oslo-config-generator/openvswitch_agent.ini",
+          "genconfig": true
+        },
+        {
+          "name": "ovn_agent.ini",
+          "src": "etc/oslo-config-generator/ovn_agent.ini",
+          "genconfig": true
+        },
+        {
+          "name": "sriov_agent.ini",
+          "src": "etc/oslo-config-generator/sriov_agent.ini",
+          "genconfig": true
+        }
+      ]
+    },
+    "nova": {
+      "src": "https://github.com/openstack/nova.git",
+      "ref": "1ff6a8e796c2f7c5a418446202f1d4762de4c191",
+      "commands": [
+        {
+          "name": "nova-api",
+          "module": "nova.api.openstack.compute.wsgi:init_application",
+          "wsgi_server": true,
+          "factory": true,
+          "port": 8774
+        },
+        {
+          "name": "nova-metadata",
+          "module": "nova.api.metadata.wsgi:init_application",
+          "wsgi_server": true,
+          "factory": true,
+          "port": 8775
+        },
+        {
+          "name": "nova-compute",
+          "module": "nova.cmd.compute:main"
+        },
+        {
+          "name": "nova-conductor",
+          "module": "nova.cmd.conductor:main"
+        },
+        {
+          "name": "nova-manage",
+          "module": "nova.cmd.manage:main"
+        },
+        {
+          "name": "nova-novncproxy",
+          "module": "nova.cmd.novncproxy:main"
+        },
+        {
+          "name": "nova-policy",
+          "module": "nova.cmd.policy:main"
+        },
+        {
+          "name": "nova-rootwrap",
+          "module": "oslo_rootwrap.cmd:main"
+        },
+        {
+          "name": "nova-rootwrap-daemon",
+          "module": "oslo_rootwrap.cmd:daemon"
+        },
+        {
+          "name": "nova-scheduler",
+          "module": "nova.cmd.scheduler:main"
+        },
+        {
+          "name": "nova-serialproxy",
+          "module": "nova.cmd.serialproxy:main"
+        },
+        {
+          "name": "nova-spicehtml5proxy",
+          "module": "nova.cmd.spicehtml5proxy:main"
+        },
+        {
+          "name": "nova-status",
+          "module": "nova.cmd.status:main"
+        }
+      ],
+      "assets": [
+        {
+          "name": "api-paste.ini",
+          "src": "etc/nova/api-paste.ini"
+        },
+        {
+          "name": "rootwrap.conf",
+          "src": "etc/nova/rootwrap.conf"
+        },
+        {
+          "name": "compute.filters",
+          "src": "etc/nova/rootwrap.d/compute.filters"
+        },
+        {
+          "name": "nova.conf",
+          "src": "etc/nova/nova-config-generator.conf",
+          "genconfig": true
+        },
+        {
+          "name": "policy.yaml",
+          "src": "etc/nova/nova-policy-generator.conf",
+          "genpolicy": true
+        }
+      ]
+    },
+    "cinder": {
+      "src": "https://github.com/openstack/cinder.git",
+      "ref": "c36f40684e140a1492b00dd4812e8dce17fb2ebf",
+      "commands": [
+        {
+          "name": "cinder-api",
+          "module": "cinder.cmd.api:main"
+        },
+        {
+          "name": "cinder-backup",
+          "module": "cinder.cmd.backup:main"
+        },
+        {
+          "name": "cinder-manage",
+          "module": "cinder.cmd.manage:main"
+        },
+        {
+          "name": "cinder-rootwrap",
+          "module": "oslo_rootwrap.cmd:main"
+        },
+        {
+          "name": "cinder-rtstool",
+          "module": "cinder.cmd.rtstool:main"
+        },
+        {
+          "name": "cinder-scheduler",
+          "module": "cinder.cmd.scheduler:main"
+        },
+        {
+          "name": "cinder-status",
+          "module": "cinder.cmd.status:main"
+        },
+        {
+          "name": "cinder-volume",
+          "module": "cinder.cmd.volume:main"
+        },
+        {
+          "name": "cinder-volume-usage-audit",
+          "module": "cinder.cmd.volume_usage_audit:main"
+        }
+      ],
+      "assets": [
+        {
+          "name": "api-paste.ini",
+          "src": "etc/cinder/api-paste.ini"
+        },
+        {
+          "name": "rootwrap.conf",
+          "src": "etc/cinder/rootwrap.conf"
+        },
+        {
+          "name": "volume.filters",
+          "src": "etc/cinder/rootwrap.d/volume.filters"
+        },
+        {
+          "name": "cinder.conf",
+          "src": "tools/config/cinder-config-generator.conf",
+          "genconfig": true
+        },
+        {
+          "name": "policy.yaml",
+          "src": "tools/config/cinder-policy-generator.conf",
+          "genpolicy": true
+        }
+      ]
+    }
+  }
+}

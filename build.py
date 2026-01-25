@@ -29,9 +29,14 @@ def run_cmd(cmd: str, cwd: Path):
 
     build_env["PATH"] = os.pathsep.join(new_paths)
 
-    process = subprocess.Popen(cmd, cwd=cwd, shell=True, env=build_env)
-    process.wait()
+    process = subprocess.Popen(cmd, cwd=cwd, shell=True, env=build_env, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    stdout, stderr = process.communicate()
     if process.returncode != 0:
+        print(f"Command failed with return code {process.returncode}")
+        print("STDOUT:")
+        print(stdout.decode())
+        print("STDERR:")
+        print(stderr.decode())
         raise RuntimeError(f"Command failed: {cmd}")
 
 
@@ -178,6 +183,7 @@ def build_osbox():
         )
 
         # build osbox executable
+        print("Building osbox executable...")
         run_cmd(
             "uv pip install pyinstaller",
             cwd=build_path,

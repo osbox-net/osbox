@@ -17,7 +17,7 @@ def run_cmd(cmd: str, cwd: Path):
 
     del build_env["PATH"]
     for key in list(build_env.keys()):
-        if key.startswith("UV_"):
+        if key.startswith("UV_") and not key in ("UV_NATIVE_TLS", "UV_MANAGED_PYTHON"):
             del build_env[key]
     
     paths = os.environ.get("PATH", "").split(os.pathsep)
@@ -71,7 +71,7 @@ def build_openstack():
             if not "src" in service_info or not "ref" in service_info:
                 print(f"Skipping service {service_name} due to missing src or ref")
                 continue
-            
+
             print(f"Building service: {service_name} @ {service_info['ref']}")
             service_path = build_path / service_name
             service_path.mkdir(parents=True, exist_ok=True)

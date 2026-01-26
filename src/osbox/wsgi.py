@@ -30,17 +30,18 @@ def wsgi_server(app_spec: str, service: str, port: int, *, factory: bool = False
                 "loglevel": "info",
                 "worker_class": "sync",
                 "preload_app": False,
-                "factory": factory,
             },
+            factory=factory,
         ).run()
 
     return run
 
 
 class WSGIServer(BaseApplication):
-    def __init__(self, application, options=None):
+    def __init__(self, application, options=None, factory: bool = False):
         self.application = application  # can be callable OR "module:obj"
         self.options = options or {}
+        self.factory = factory
         super().__init__()
 
     def load_config(self):
@@ -54,7 +55,7 @@ class WSGIServer(BaseApplication):
             obj = import_app(self.application)
 
             # If configured as a factory, call it to get the WSGI app.
-            if getattr(self.cfg, "factory", False):
+            if self.factory:
                 return obj()
 
             return obj

@@ -4,6 +4,15 @@
     "ref": "stable/2025.2"
   },
   "services": {
+    "osbox": {
+      "ref": "main",
+      "commands": [
+        {
+          "name": "version",
+          "module": "osbox.cmd.version:main"
+        }
+      ]
+    },
     "keystone": {
       "src": "https://github.com/openstack/keystone.git",
       "ref": "a568938e0c967a56ade269c93f42718008487b14",

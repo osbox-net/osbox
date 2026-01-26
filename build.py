@@ -68,6 +68,10 @@ def build_openstack():
         print(f"Copied upper-constraints.txt to {req_dst}")
 
         for service_name, service_info in manifest["services"].items():
+            if not "src" in service_info or not "ref" in service_info:
+                print(f"Skipping service {service_name} due to missing src or ref")
+                continue
+            
             print(f"Building service: {service_name} @ {service_info['ref']}")
             service_path = build_path / service_name
             service_path.mkdir(parents=True, exist_ok=True)

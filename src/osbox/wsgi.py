@@ -4,7 +4,7 @@ from gunicorn.app.base import BaseApplication
 from gunicorn.util import import_app
 
 
-def wsgi_server(app_spec: str, service: str, port: int, *, factory: bool):
+def wsgi_server(app_spec: str, service: str, port: int, *, factory: bool = False):
     service_env_slug = service.upper().replace("-", "_")
     def run() -> None:
         bind = os.environ.get(f"OSBOX_{service_env_slug}_BIND", f"127.0.0.1:{port}")
@@ -30,6 +30,7 @@ def wsgi_server(app_spec: str, service: str, port: int, *, factory: bool):
                 "loglevel": "info",
                 "worker_class": "sync",
                 "preload_app": False,
+                "factory": factory,
             },
         ).run()
 

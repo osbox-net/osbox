@@ -5,22 +5,24 @@ from gunicorn.util import import_app
 
 
 def wsgi_server(app_spec: str, service: str, port: int, *, factory: bool):
+    service_env_slug = service.upper().replace("-", "_")
     def run() -> None:
+        bind = os.environ.get(f"OSBOX_{service_env_slug}_BIND", f"127.0.0.1:{port}")
         WSGIServer(
             app_spec,
             {
-                "bind": f"127.0.0.1:{port}",
+                "bind": bind,
                 "workers": int(
                     os.environ.get(
                         "OSBOX_WORKERS",
-                        int(os.environ.get(f"OSBOX_{service.upper()}_WORKERS", "1")),
+                        int(os.environ.get(f"OSBOX_{service_env_slug}_WORKERS", "1")),
                     )
                 ),
                 "timeout": 300,
                 "threads": int(
                     os.environ.get(
                         "OSBOX_THREADS",
-                        int(os.environ.get(f"OSBOX_{service.upper()}_THREADS", "1")),
+                        int(os.environ.get(f"OSBOX_{service_env_slug}_THREADS", "1")),
                     )
                 ),
                 "accesslog": "-",

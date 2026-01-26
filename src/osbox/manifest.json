@@ -10,6 +10,10 @@
         {
           "name": "version",
           "module": "osbox.cmd.version:main"
+        },
+        {
+          "name": "enable-wal",
+          "module": "osbox.cmd.enable_wal:main"
         }
       ]
     },

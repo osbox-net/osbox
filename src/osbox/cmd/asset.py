@@ -21,6 +21,21 @@ def cmd_asset_list(service_name: str | None = None):
                 if asset_file.is_file():
                     print(f"  {asset_file.name}")
 
+
+def cmd_asset_cat(service_name: str, asset_name: str):
+    assets_dir = Path(__file__).parent.parent / "assets"
+    asset_path = assets_dir / service_name / asset_name
+
+    if not asset_path.exists() or not asset_path.is_file():
+        print(f"Asset not found: {service_name}/{asset_name}")
+        sys.exit(1)
+
+    with asset_path.open("r", encoding="utf-8") as f:
+        content = f.read()
+        sys.stdout.write(content)
+        if content and not content.endswith("\n"):
+            sys.stdout.write("\n")
+
     
 def main():
     parser = argparse.ArgumentParser(prog="osbox asset")
@@ -37,9 +52,19 @@ def main():
         help="Name of the service to list assets for (optional)",
     )
 
+    cat_parser = subparsers.add_parser(
+        "cat",
+        help="Print an asset to stdout",
+        description="Print a specific asset file to stdout",
+    )
+    cat_parser.add_argument("service_name", help="Service the asset belongs to")
+    cat_parser.add_argument("asset_name", help="Asset filename to print")
+
     args = parser.parse_args(args=None if sys.argv[1:] else ["--help"])
 
     if args.command == "list":
         cmd_asset_list(service_name=args.service_name)
+    elif args.command == "cat":
+        cmd_asset_cat(service_name=args.service_name, asset_name=args.asset_name)
     else:
         parser.error(f"Unknown command: {args.command}")

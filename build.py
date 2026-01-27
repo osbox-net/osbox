@@ -145,7 +145,7 @@ def build_openstack():
         print("Build of OpenStack wheelhouse completed.")
 
 
-def build_osbox():
+def build_osbox(onefile: bool = True):
 
     root_path = Path(__file__).parent.resolve()
     dist_path = root_path / "dist"
@@ -166,7 +166,7 @@ def build_osbox():
         print(f"Building in temporary directory: {build_path}")
 
         # copy entrypoint and spec file
-        for f in ["main.py", "osbox.spec"]:
+        for f in ["main.py", "osbox.spec", "osbox-onefile.spec"]:
             src = root_path / f
             dst = build_path / f
             shutil.copy(src, dst)
@@ -192,18 +192,28 @@ def build_osbox():
             "uv pip install pyinstaller",
             cwd=build_path,
         )
+        if onefile:
+            spec_file = "osbox-onefile.spec"
+        else:
+            spec_file = "osbox.spec"
+
         run_cmd(
-            "uv run pyinstaller --noconfirm osbox.spec",
+            f"uv run pyinstaller --noconfirm {spec_file}",
             cwd=build_path,
         )
 
-        # copy the built executable back to root_path/dist
+        # copy the built executable back to root_path/dist (handles onefile or onedir)
         built_exe = build_path / "dist" / "osbox"
         final_exe = dist_path / "osbox"
-        shutil.copy(built_exe, final_exe)
+
+        if built_exe.is_dir():
+            shutil.copytree(built_exe, final_exe)
+        else:
+            shutil.copy(built_exe, final_exe)
+
         print(f"Copied built osbox executable to {final_exe}")
 
 
 if __name__ == "__main__":
-    build_openstack()
-    build_osbox()
+    # build_openstack()
+    build_osbox(onefile=False)

@@ -21,6 +21,16 @@
         }
       ]
     },
+    "python-openstackclient": {
+      "src": "https://github.com/openstack/python-openstackclient.git",
+      "ref": "34f431badee365fcec5841973e3e5a853301ee07",
+      "commands": [
+        {
+          "name": "openstack",
+          "module": "openstackclient.shell:main"
+        }
+      ]
+    },
     "keystone": {
       "src": "https://github.com/openstack/keystone.git",
       "ref": "a568938e0c967a56ade269c93f42718008487b14",

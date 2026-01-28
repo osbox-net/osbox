@@ -12,6 +12,6 @@ RUN uv run build.py
 
 
 FROM debian:bookworm-slim
-COPY --from=builder /app/dist/osbox /usr/bin/osbox
-
-ENTRYPOINT [ "/usr/bin/osbox" ]
+COPY --from=builder /app/dist/osbox /opt/osbox
+ENV PATH="/opt/osbox:${PATH}"
+ENTRYPOINT [ "osbox" ]

@@ -215,5 +215,5 @@ def build_osbox(onefile: bool = True):
 
 
 if __name__ == "__main__":
-    # build_openstack()
+    build_openstack()
     build_osbox(onefile=False)

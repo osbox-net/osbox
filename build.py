@@ -156,6 +156,13 @@ def build_osbox(onefile: bool = True):
 
     print(f"Starting build of osbox from {root_path}")
 
+    current_git_sha = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root_path).decode().strip()
+    print(f"Current git SHA: {current_git_sha}")
+    print(f"Writing git SHA to manifest")
+    manifest["services"]["osbox"]["ref"] = current_git_sha
+    with open("src/osbox/manifest.json", "w") as f:
+        json.dump(manifest, f, indent=2)
+
     print("Building osbox wheel...")
     run_cmd(
         "uv build --wheel",

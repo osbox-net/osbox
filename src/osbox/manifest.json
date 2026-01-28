@@ -71,7 +71,7 @@
         }
       ]
     },
-    "placement": {
+    "openstack_placement": {
       "src": "https://github.com/openstack/placement.git",
       "ref": "a4644b2799b6de4f4cf69a6bce529a993e97fb71",
       "commands": [

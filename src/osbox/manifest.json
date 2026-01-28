@@ -16,6 +16,10 @@
           "module": "osbox.cmd.enable_wal:main"
         },
         {
+          "name": "check-http",
+          "module": "osbox.cmd.check_http:main"
+        },
+        {
           "name": "asset",
           "module": "osbox.cmd.asset:main"
         }

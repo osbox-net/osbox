@@ -151,6 +151,9 @@ def build_osbox(onefile: bool = True):
     dist_path = root_path / "dist"
     dist_path.mkdir(parents=True, exist_ok=True)
 
+    with open("src/osbox/manifest.json", "r") as f:
+        manifest = json.load(f)
+
     print(f"Starting build of osbox from {root_path}")
 
     print("Building osbox wheel...")
@@ -185,6 +188,18 @@ def build_osbox(onefile: bool = True):
             f"uv pip install {wheel_files} -c {dist_path / 'upper-constraints.txt'}",
             cwd=build_path,
         )
+
+        # collect and install any extra packages from manifest
+        extra_packages: set[str] = set()
+        for _, service_info in manifest["services"].items():
+            for pkg in service_info.get("extra_packages", []):
+                extra_packages.add(pkg)
+        for pkg in extra_packages:
+            print(f"Installing extra package: {pkg}")
+            run_cmd(
+                f"uv pip install {pkg} -c {dist_path / 'upper-constraints.txt'}",
+                cwd=build_path,
+            )
 
         # build osbox executable
         print("Building osbox executable...")

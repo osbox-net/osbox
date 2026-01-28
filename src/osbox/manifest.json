@@ -38,6 +38,9 @@
     "keystone": {
       "src": "https://github.com/openstack/keystone.git",
       "ref": "a568938e0c967a56ade269c93f42718008487b14",
+      "extra_packages": [
+        "python-memcached"
+      ],
       "commands": [
         {
           "name": "keystone-api",
